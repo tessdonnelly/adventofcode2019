@@ -39,21 +39,21 @@ def down(x,y,l,points):
     while i <= l:
         points.append((x,y-i))
         i+=1
-    return points
+    return
 
 def left(x,y,l,points):
     i=1
     while i <= l:
         points.append((x-i,y))
         i+=1
-    return points
+    return
 
 def right(x,y,l,points):
     i=1
     while i <= l:
         points.append((x+i,y))
         i+=1
-    return points
+    return 
 
 def getCoords(input):
     moves = input.split(',')
@@ -106,4 +106,4 @@ assert steps(ex1) == 30
 assert steps(ex2) == 610
 assert steps(ex3) ==  410
 
-print('Min steps is %d' % steps(lines)) 
+print('Min steps is %d' % steps(lines))
