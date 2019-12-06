@@ -56,21 +56,15 @@ def password2(input):
     else:
         inc=True
 
-    # check for duplicates
+    # check for duplicates but not multiples 
     dup = None
     x = 1
     while (x<(len(a)))and(bool(dup)!=True):
         if a[x] == a[x-1]:
             dup=True
-            print a
-            print x
             while (x<len(a)-1)and (a[x]==a[x+1]):
                 dup=False
                 x+=1
-#            if (x+2<len(a))and(a[x+1]==a[x+2]):
-#                dup=False
-#                print ('Dup is false again!')
-#                x+=1
         x+=1
     if bool(inc) is True and bool(dup) is True:
         return input
