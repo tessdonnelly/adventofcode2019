@@ -8,7 +8,6 @@
 # place the product of x and y in position z
 
 ## opcode 99 [99,x,y,z] halts the program
-import copy
 
 def opcode(input):
     i = 0
@@ -56,4 +55,4 @@ for i in range(0,99):
             print("Noun is %d" % i)
             print("Verb is %d" % j)
             answer = i*100+j
-            print("Answer is %d" % answer )
+            print("Answer is %d" % answer)
