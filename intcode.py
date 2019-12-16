@@ -11,7 +11,6 @@ class Computer(Thread):
     # Initialise thread.
         super(Computer, self).__init__()
         self.name = name
-        print('starting computer ', self.name)
         self.inputs = collections.deque([])
         self.program = []
         self.output = 0
@@ -31,18 +30,17 @@ class Computer(Thread):
         self.program = program
 
     def set_inputs(self, inputs):
+        #print "Setting inputs to", inputs
         for n in inputs:
             self.inputs.append(n)
-            print("Setting inputs of computer ",self.name, " to ", n)
 
     def set_output(self, output_computer):
-        print('output set to computer', output_computer.name)
         self.output_computer = output_computer
 
     def next_input(self):
         while len(self.inputs) == 0:
-          print("NO INPUT for", self.name)
-          time.sleep(1)
+          #print "NO INPUT for", self.name
+          time.sleep(0.001)
         return self.inputs.popleft()
 
     # opcode 1
@@ -75,7 +73,6 @@ class Computer(Thread):
     def inp(self, index, params):
         x = self.next_input()
         self.program[self.program[index+1]] = x
-        print("using computer ", self.name, "input ",x)
         return index + 2
 
     # opcode 4
@@ -85,8 +82,7 @@ class Computer(Thread):
         else:
             x = self.program[index+1]
         self.output = x
-        self.output_computer.set_inputs([x])
-        print("Set input of ",self.output_computer.name, " to ",x)
+#        self.output_computer.set_inputs([x])
         return index + 2
 
     # opcode 5 - jump if TRUE
@@ -157,20 +153,14 @@ class Computer(Thread):
 
     def run(self):
         index = 0
-        print('running computer', self.name)
         while True:
             code = "{:05d}".format(self.program[index])
             opcode = int(code[3:])
-            print(code)
             params = [0,0,0]
             params[0] = int(code[2])
             params[1] = int(code[1])
             params[2] = int(code[0])
-            print(params)
             if opcode == 99:
-                print("breaking ", self.name)
-                print("output of broken ", self.output)
-                print("index ", index)
                 break
             opfunc = self.opcodes[opcode]
             index = opfunc(index,params)
@@ -181,17 +171,15 @@ def run(program, phase_seq):
     computer.set_inputs([phase_seq[i], computer.output])
     computer.set_program(program)
     computer.run()
-    # print computer.output
+    print computer.output
 
-# computer = Computer("TEST")
-'''
+computer = Computer("TEST")
+
 with open("input7.txt", "r") as f:
     input7 = f.read()
 program = [int(x) for x in input7.split(',')]
-# print program
-'''
-# part 1
-'''
+print program
+
 from itertools import permutations
 possibles = list(set(permutations(range(0, 5))))
 
@@ -202,49 +190,3 @@ for p in possibles:
         maxOutput = computer.output
 
 print 'Max output: {}'.format(maxOutput)
-'''
-
-# part 2
-
-seq = [9,8,7,6,5]
-program = [3,26,1001,26,-4,26,3,27,1002,27,2,27,1,27,26,27,4,27,1001,28,-1,28,1005,28,6,99,0,0,5]
-
-computerA = Computer("A")
-computerB = Computer("B")
-computerC = Computer("C")
-computerD = Computer("D")
-computerE = Computer("E")
-
-computerA.set_program(program)
-computerA.set_inputs([seq[0],0])
-computerA.set_output(computerB)
-
-computerB.set_program(program)
-computerB.set_inputs([seq[1]])
-computerB.set_output(computerC)
-
-computerC.set_program(program)
-computerC.set_inputs([seq[2]])
-computerC.set_output(computerD)
-
-computerD.set_program(program)
-computerD.set_inputs([seq[3]])
-computerD.set_output(computerE)
-
-computerE.set_program(program)
-computerE.set_inputs([seq[4]])
-computerE.set_output(computerA)
-
-computerA.start()
-computerB.start()
-computerC.start()
-computerD.start()
-computerE.start()
-
-computerA.join()
-computerB.join()
-computerC.join()
-computerD.join()
-computerE.join()
-
-print(computerE.output)

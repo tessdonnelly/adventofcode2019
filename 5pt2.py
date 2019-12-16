@@ -1,5 +1,3 @@
-# day 5
-
 with open("input5.txt", "r") as f:
     puzzle = f.read()
 
